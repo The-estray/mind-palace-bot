@@ -1,0 +1,5 @@
+.osp/
+config/db.php
+raw_log.txt
+*.log
+.vscode/
