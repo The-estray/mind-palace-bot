@@ -56,14 +56,14 @@ if (isset($data['message'])) {
             ];
             $bot->SendMessage($chatId, $newText, $keyboard);
         } else {
-            $newText = "С возвращением. В чертогах сохранено {$count} цитат.";
+            $msg = "С возвращением. В чертогах сохранено {$count} цитат.";
             $keyboard = [
                 'inline_keyboard' => [
                     [['text' => '➕ Добавить мысль', 'callback_data' => 'add_quote']],
                     [['text' => '🎲 Случайная мысль', 'callback_data' => 'random_quote']],
                 ]
             ];
-            $bot->SendMessage($chatId, $newText, $keyboard);
+            $bot->SendMessage($chatId, $msg, $keyboard);
         }
     }
 } elseif (isset($data['callback_query'])) {
