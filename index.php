@@ -10,8 +10,6 @@ if (!$data) {
 
 if (isset($data['message'])) {
     require_once __DIR__ . '/handlers/message.php';
-}
-
-elseif (isset($data['callback_query'])) {
+} elseif (isset($data['callback_query'])) {
     require_once __DIR__ . '/handlers/callback.php';
 }

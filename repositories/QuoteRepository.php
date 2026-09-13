@@ -9,11 +9,11 @@ class QuoteRepository
         $this->pdo = $pdo;
     }
 
-    public function create(int $userId, string $text): void
+    public function create(int $userId, string $text, ?int $categoryId = null): void
     {
-        $sql = "INSERT INTO quotes (text, user_id) VALUES (?,?)";
+        $sql = "INSERT INTO quotes (text, user_id, category_id) VALUES (?,?,?)";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([$text, $userId]);
+        $stmt->execute([$text, $userId, $categoryId]);
     }
 
     public function countByUserId(int $userId): int

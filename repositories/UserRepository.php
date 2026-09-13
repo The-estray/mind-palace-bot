@@ -34,4 +34,20 @@ class UserRepository
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$step, $telegramId]);
     }
+
+    public function setTempText(int $telegramId, ?string $text): void
+    {
+        $sql = "UPDATE users SET temp_text = ? WHERE telegram_id = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$text, $telegramId]);
+    }
+
+    public function getTempText(int $telegramId): ?string
+    {
+        $sql = "SELECT temp_text FROM users WHERE telegram_id = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$telegramId]);
+        $res = $stmt->fetchColumn();
+        return $res !== false ? $res: null;
+    }
 }
