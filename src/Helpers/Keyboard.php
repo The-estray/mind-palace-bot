@@ -15,6 +15,7 @@ class Keyboard
                 'inline_keyboard' => [
                     [['text' => '➕ Добавить мысль', 'callback_data' => 'add_quote']],
                     [['text' => '🎲 Случайная мысль', 'callback_data' => 'random_quote']],
+                    [['text' => '👁‍🗨 Заглянуть в чертоги', 'callback_data' => 'open_chambers']],
                 ]
             ];
         }
@@ -52,8 +53,45 @@ class Keyboard
             'inline_keyboard' => [
                 [['text' => '🎲 Еще мысль', 'callback_data' => 'random_quote']],
                 [['text' => '➕ Добавить мысль', 'callback_data' => 'add_quote']],
+                [['text' => '👁‍🗨 Заглянуть в чертоги', 'callback_data' => 'open_chambers']],
             ]
         ];
+        return $keyboard;
+    }
+
+    public static function cancelAction(): array
+    {
+        $keyboard = [
+            'inline_keyboard' => [
+                [['text' => '❌ Отмена', 'callback_data' => 'cancel_action']],
+            ]
+        ];
+        return $keyboard;
+    }
+
+    public static function openChambers(array $cats, int $countWithoutCat): array
+    {
+        $keyboard = [
+            'inline_keyboard' => []
+        ];
+
+        foreach ($cats as $cat) {
+            $keyboard['inline_keyboard'][] = [
+                ['text' => $cat['title'] . '(' . $cat['quotes_count'] . ')', 'callback_data' => 'view_cat_' . $cat['id']]
+            ];
+        }
+
+        if ($countWithoutCat > 0) {
+            $keyboard['inline_keyboard'][] = [
+                ['text' => '📥 Без папки (' . $countWithoutCat . ')', 'callback_data' => 'view_cat_0'],
+            ];
+        }
+
+        $keyboard['inline_keyboard'][] = [
+            ['text' => '⬅️ Назад', 'callback_data' => 'cancel_action'],
+        ];
+
+
         return $keyboard;
     }
 }

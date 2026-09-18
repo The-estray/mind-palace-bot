@@ -8,8 +8,9 @@ if (!$data) {
     exit;
 }
 
-if (isset($data['message'])) {
-    require_once __DIR__ . '/handlers/message.php';
-} elseif (isset($data['callback_query'])) {
-    require_once __DIR__ . '/handlers/callback.php';
+$update = new Update($data);
+
+if (!$update->isValid()) {
+    exit;
 }
+

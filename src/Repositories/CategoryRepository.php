@@ -13,7 +13,7 @@ class CategoryRepository
     {
         $sql = "INSERT INTO categories (user_id, title) VALUES (?,?)";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([$userId,$title]);
+        $stmt->execute([$userId, $title]);
         return (int)$this->pdo->lastInsertId();
     }
 
@@ -26,7 +26,7 @@ class CategoryRepository
         return $category;
     }
 
-    public function countQuotesByCategoryId( int $categoryId, int $userId): int
+    public function countQuotesByCategoryId(int $categoryId, int $userId): int
     {
         $sql = "SELECT COUNT(*) FROM quotes WHERE category_id = ? AND user_id = ?";
         $stmt = $this->pdo->prepare($sql);
@@ -39,5 +39,22 @@ class CategoryRepository
         $sql = "UPDATE categories SET is_deleted = 1 WHERE id = ? AND user_id = ?";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$id, $userId]);
+    }
+
+    public function getAllWithQuotesCountByUserId(int $userId): array
+    {
+        $sql = "SELECT 
+                c.id, 
+                c.title, 
+                COUNT(q.id) AS quotes_count
+            FROM categories c
+            LEFT JOIN quotes q ON q.category_id = c.id
+            WHERE c.user_id = ? AND c.is_deleted = 0
+            GROUP BY c.id, c.title";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$userId]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

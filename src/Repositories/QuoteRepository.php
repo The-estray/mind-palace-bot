@@ -21,7 +21,6 @@ class QuoteRepository
         $sql = "SELECT COUNT(*) FROM quotes WHERE user_id = ?";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$userId]);
-
         return (int)$stmt->fetchColumn();
     }
 
@@ -32,5 +31,13 @@ class QuoteRepository
         $stmt->execute([$userId]);
         $quote = $stmt->fetchColumn();
         return $quote !== false ? $quote: null;
+    }
+
+    public function countWithoutCategory(int $userId): int
+    {
+        $sql = "SELECT COUNT(*) FROM quotes WHERE user_id = ? AND category_id IS NULL";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$userId]);
+        return (int)$stmt->fetchColumn();
     }
 }
